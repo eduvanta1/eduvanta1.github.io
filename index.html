@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090d">
+  <meta name="description" content="EDUVANTA SCHOLARS — Learn, Grow, Achieve.">
+  <title>EDUVANTA SCHOLARS | Learn • Grow • Achieve</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+    :root{--gold:#f7c85b;--gold2:#ffdf83;--bg:#07090e;--panel:#10141d;--muted:#a7a9b2}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(ellipse at 50% -20%,#273047 0%,#0a0d14 42%,#050609 100%);color:#f8f5ed;font-family:'DM Sans',sans-serif;min-height:100vh}
+    .gold-text{background:linear-gradient(110deg,#fff0b2 0%,#e9ad35 42%,#fff0b2 68%,#c88b20 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .gold-border{border:1px solid rgba(247,200,91,.65);box-shadow:0 0 9px #f7c85b55,inset 0 0 10px #f7c85b16}
+    .topbar{background:rgba(8,10,15,.82);border:1px solid #b58a3b88;box-shadow:0 0 20px #e9b94b22,inset 0 0 16px #e9b94b0d;backdrop-filter:blur(18px)}
+    .nav-pill{border:1px solid transparent;color:#d5d1c7;transition:.25s}
+    .nav-pill.active,.nav-pill:hover{color:#17120a;background:linear-gradient(135deg,#fff0ad,#e9ad35);box-shadow:0 0 18px #f6c65a66}
+    .icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid #b88b3d99;color:#f6d47d;background:linear-gradient(145deg,#191b20,#08090d);box-shadow:0 0 12px #e9b94b22;transition:.2s}
+    .icon-btn:hover{transform:translateY(-2px);box-shadow:0 0 18px #f4c45c66}
+    .hero{position:relative;isolation:isolate;overflow:hidden;border:1px solid #d6a94466;background:linear-gradient(115deg,#111a2aee,#080a10f5 55%,#16101aee);box-shadow:0 0 35px #d9a63d22,inset 0 0 35px #e5b84b0d}
+    .hero:before{content:"";position:absolute;inset:-40%;z-index:-1;background:radial-gradient(circle at 50% 50%,#d8a33c1e,transparent 55%)}
+    .logo-ring{width:clamp(112px,18vw,172px);height:clamp(112px,18vw,172px);border-radius:50%;display:grid;place-items:center;padding:10px;background:radial-gradient(circle,#10131b 55%,#e9b64b 57%,#17120a 60%,#08090d 70%);border:1px solid #f4ce70;box-shadow:0 0 14px #f3c75b99,0 0 45px #e9b94b44}
+    .logo-ring img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+    .hero-title{font-family:'Playfair Display',serif;letter-spacing:.015em;text-shadow:0 3px 18px #000}
+    .search-shell{background:#080a0f;border:1px solid #d7a843aa;box-shadow:0 0 18px #e9b94b24,inset 0 0 12px #e9b94b12}
+    .platform-card{position:relative;overflow:hidden;min-height:245px;border-radius:26px;background:linear-gradient(145deg,#171a21,#080a10 65%);border:1px solid #e4b84d;box-shadow:0 0 10px #eab84499,inset 0 0 24px #eab84416;transition:transform .25s,box-shadow .25s}
+    .platform-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 20%,#f5c65b24,transparent 48%);pointer-events:none}
+    .platform-card:hover{transform:translateY(-5px);box-shadow:0 0 22px #f3c45cbb,inset 0 0 30px #eab84422}
+    .timer-chip{background:#090b10d9;border:1px solid #e7bb57aa;box-shadow:0 0 10px #e7bb5744}
+    .gold-btn{background:linear-gradient(135deg,#fff0ad,#e6aa31 55%,#ffdf83);color:#1b1408;box-shadow:0 0 18px #eab84466;transition:.2s}
+    .gold-btn:hover{transform:translateY(-2px);box-shadow:0 0 25px #f5cb6eaa}
+    .screen{display:none}.screen.active{display:block}
+    .glass-panel{background:linear-gradient(145deg,#171a22dd,#0b0d13ee);border:1px solid #c79a4777;box-shadow:0 0 25px #d7a84318,inset 0 0 20px #e8b94b0a;backdrop-filter:blur(14px)}
+    .bottom-nav{background:#090b10eF;border:1px solid #c69b4d99;box-shadow:0 0 20px #e9b94b2a;backdrop-filter:blur(16px)}
+    .drawer{position:fixed;inset:0 auto 0 0;width:min(310px,85vw);z-index:80;transform:translateX(-105%);transition:transform .28s;background:#090c13f5;border-right:1px solid #c79b4e88;backdrop-filter:blur(20px);padding:24px}
+    .drawer.open{transform:translateX(0)}
+    .scrim{position:fixed;inset:0;background:#0009;z-index:70;display:none}.scrim.show{display:block}
+    .muted{color:var(--muted)}
+    @media(max-width:640px){.platform-card{min-height:225px}.hide-mobile{display:none}.hero{border-radius:24px}.topbar{border-radius:22px}.icon-btn{width:38px;height:38px}}
+  </style>
+</head>
+<body>
+  <div id="scrim" class="scrim" onclick="closeDrawer()"></div>
+  <aside id="drawer" class="drawer">
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-3"><img src="assets/eduvanta-logo.png" class="w-10 h-10 object-contain" alt="EDUVANTA" onerror="this.style.display='none'"><b class="gold-text tracking-wider">EDUVANTA</b></div>
+      <button class="icon-btn" onclick="closeDrawer()" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <button class="w-full text-left p-4 rounded-xl nav-pill active mb-3" onclick="showScreen('home-screen');closeDrawer()"><i class="fa-solid fa-house mr-3"></i>Home</button>
+    <button class="w-full text-left p-4 rounded-xl nav-pill mb-3" onclick="showScreen('chat-screen');closeDrawer()"><i class="fa-regular fa-comments mr-3"></i>Chat / Community</button>
+    <p class="text-xs muted mt-8 leading-6">LEARN • GROW • ACHIEVE</p>
+  </aside>
+
+  <header class="sticky top-0 z-50 px-3 sm:px-5 pt-3">
+    <div class="topbar max-w-7xl mx-auto rounded-full px-3 sm:px-5 py-2 flex items-center justify-between gap-2">
+      <button class="icon-btn shrink-0" onclick="openDrawer()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+      <nav class="flex items-center gap-1 sm:gap-3">
+        <button id="home-nav" class="nav-pill active rounded-full px-3 sm:px-6 py-2.5 font-bold text-sm" onclick="showScreen('home-screen')"><i class="fa-solid fa-house mr-1 sm:mr-2"></i>Home</button>
+        <button id="chat-nav" class="nav-pill rounded-full px-3 sm:px-5 py-2.5 font-semibold text-sm" onclick="showScreen('chat-screen')"><i class="fa-regular fa-message mr-1 sm:mr-2"></i>Chat</button>
+      </nav>
+      <div class="flex items-center gap-1.5 sm:gap-3">
+        <button class="icon-btn hide-mobile" id="sound-btn" onclick="toggleSound()" aria-label="Toggle sound"><i class="fa-solid fa-volume-high"></i></button>
+        <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle display"><i class="fa-regular fa-sun"></i></button>
+        <button class="icon-btn hide-mobile" onclick="document.getElementById('study-platforms').scrollIntoView({behavior:'smooth'})" aria-label="Timer"><i class="fa-regular fa-clock"></i></button>
+        <button class="icon-btn relative" onclick="showNotice()" aria-label="Notifications"><i class="fa-regular fa-bell"></i><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500"></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-5 pb-28">
+    <!-- HOME -->
+    <section id="home-screen" class="screen active">
+      <div class="hero rounded-[30px] px-5 sm:px-10 py-8 sm:py-10 text-center mb-6">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-10 mb-5">
+          <p class="hidden sm:block text-left italic text-2xl gold-text" style="font-family:'Playfair Display',serif">Dream Big<br>Study Hard</p>
+          <div class="logo-ring shrink-0"><img src="assets/eduvanta-logo.png" alt="EDUVANTA SCHOLARS Logo" onerror="this.style.display='none'"></div>
+          <p class="hidden sm:block text-left text-lg text-amber-100/90" style="font-family:'Playfair Display',serif">“Education<br>Must Be Free<br>For Everyone”</p>
+        </div>
+        <p class="uppercase tracking-[.28em] text-xs sm:text-sm text-amber-200 mb-2">Welcome to the</p>
+        <h1 class="hero-title text-4xl sm:text-6xl md:text-7xl font-extrabold gold-text">EDUVANTA</h1>
+        <h2 class="hero-title text-3xl sm:text-5xl md:text-6xl font-bold italic text-white -mt-1">SCHOLARS</h2>
+        <p class="tracking-[.35em] text-[10px] sm:text-sm text-amber-100/80 mt-4">LEARN · GROW · ACHIEVE</p>
+      </div>
+
+      <div class="search-shell rounded-full flex items-center gap-3 px-4 py-3 mb-8 max-w-4xl mx-auto">
+        <i class="fa-solid fa-magnifying-glass text-2xl text-amber-200"></i>
+        <input id="batch-search" type="search" placeholder="Search batches (Next Toppers...)" class="w-full bg-transparent outline-none text-white placeholder:text-slate-400 text-sm sm:text-base" oninput="filterPlatforms()">
+        <button class="gold-btn rounded-full w-11 h-11 shrink-0"><i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+
+      <div id="study-platforms" class="flex items-center justify-between gap-3 mb-5">
+        <h2 class="hero-title text-2xl sm:text-3xl font-bold flex items-center gap-3"><i class="fa-solid fa-graduation-cap gold-text"></i>Study Platforms</h2>
+        <span class="gold-border rounded-full px-3 sm:px-5 py-2 text-xs sm:text-sm text-amber-100 whitespace-nowrap"><i class="fa-solid fa-circle text-emerald-400 text-[9px] mr-2"></i>1 Active <i class="fa-solid fa-chevron-right ml-2"></i></span>
+      </div>
+
+      <div id="platform-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <article class="platform-card p-5 sm:p-6 flex flex-col justify-between cursor-pointer" data-name="next toppers" onclick="openNextToppers()">
+          <div class="flex items-start justify-between gap-3 relative z-10">
+            <div class="timer-chip rounded-full px-3 py-2 text-amber-100 text-xs sm:text-sm font-bold"><i class="fa-regular fa-clock mr-2 gold-text"></i><span id="access-timer">Generate a key to activate</span></div>
+            <span class="gold-btn rounded-full px-3 py-1.5 text-[10px] sm:text-xs font-extrabold">POPULAR</span>
+          </div>
+          <div class="relative z-10 flex items-end justify-between mt-8">
+            <div>
+              <div class="w-16 h-16 rounded-2xl bg-amber-300/10 border border-amber-300/30 flex items-center justify-center mb-4"><i class="fa-solid fa-chart-line text-4xl gold-text"></i></div>
+              <h3 class="hero-title text-2xl sm:text-3xl font-bold">Next Toppers</h3>
+              <p class="text-sm text-amber-100/75 mt-1">Learn · Practice · Excel</p>
+              <p id="access-timer-label" class="text-[11px] text-amber-200/70 mt-3">24-hour key access</p>
+            </div>
+            <span class="w-11 h-11 rounded-full gold-border grid place-items-center text-amber-200 text-xl"><i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+        </article>
+      </div>
+      <p id="no-results" class="hidden text-center muted py-8">No matching platform found.</p>
+    </section>
+
+    <!-- CHAT -->
+    <section id="chat-screen" class="screen max-w-3xl mx-auto pt-8">
+      <div class="glass-panel rounded-[28px] p-6 sm:p-10 text-center">
+        <div class="w-20 h-20 rounded-3xl mx-auto mb-5 grid place-items-center gold-border bg-amber-300/10"><i class="fa-regular fa-comments text-4xl gold-text"></i></div>
+        <p class="text-xs tracking-[.3em] text-amber-200 mb-3">EDUVANTA COMMUNITY</p>
+        <h2 class="hero-title text-3xl sm:text-5xl font-bold mb-4">Connect with Scholars</h2>
+        <p class="muted leading-7 max-w-xl mx-auto mb-8">Join the official EDUVANTA community on Telegram for updates, announcements and learning support.</p>
+        <div class="rounded-2xl border border-amber-200/20 bg-black/20 p-5 mb-7 flex items-center gap-4 text-left">
+          <div class="w-14 h-14 rounded-2xl bg-sky-500/15 grid place-items-center text-sky-300 text-3xl"><i class="fa-brands fa-telegram"></i></div>
+          <div class="min-w-0"><h3 class="font-bold text-white">EDUVANTA Telegram</h3><p class="text-xs muted break-all">t.me/EduVantaHQG/1</p></div>
+          <i class="fa-solid fa-shield-halved text-amber-200 ml-auto"></i>
+        </div>
+        <a href="https://t.me/EduVantaHQG/1" target="_blank" rel="noopener noreferrer" class="gold-btn inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 font-extrabold"><i class="fa-brands fa-telegram text-xl"></i> OPEN TELEGRAM COMMUNITY <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
+      </div>
+    </section>
+
+    <!-- IFRAME VIEWER -->
+    <section id="viewer-screen" class="screen">
+      <div class="flex items-center justify-between gap-3 mb-4 glass-panel rounded-2xl p-3 sm:p-4">
+        <button onclick="backToHome()" class="rounded-xl border border-amber-200/30 px-3 py-2 text-sm text-amber-100"><i class="fa-solid fa-arrow-left mr-2"></i>Back</button>
+        <span class="text-xs sm:text-sm font-semibold text-amber-100"><i class="fa-solid fa-circle text-emerald-400 text-[9px] mr-2"></i>Next Toppers Session</span>
+        <button onclick="refreshIframe()" class="rounded-xl border border-amber-200/30 px-3 py-2 text-sm text-amber-100"><i class="fa-solid fa-rotate mr-2"></i><span class="hidden sm:inline">Refresh</span></button>
+      </div>
+      <div class="w-full h-[78vh] min-h-[480px] rounded-2xl overflow-hidden border border-amber-200/40 shadow-[0_0_25px_#e9b94b22] bg-white">
+        <iframe id="content-iframe" src="" title="Next Toppers" class="w-full h-full border-0" allowfullscreen></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="fixed bottom-0 inset-x-0 z-40 px-4 pb-3 pointer-events-none">
+    <div class="bottom-nav pointer-events-auto max-w-md mx-auto rounded-full p-2 flex items-center justify-center gap-2">
+      <button id="bottom-home" class="nav-pill active rounded-full px-8 py-3 font-bold" onclick="showScreen('home-screen')"><i class="fa-solid fa-house mr-2"></i>Home</button>
+      <button id="bottom-chat" class="nav-pill rounded-full px-8 py-3 font-semibold" onclick="showScreen('chat-screen')"><i class="fa-regular fa-message mr-2"></i>Chat</button>
+    </div>
+    <p class="text-center text-[9px] sm:text-[10px] tracking-[.3em] text-amber-200/70 mt-2">TOGETHER TOWARDS A BRIGHTER FUTURE</p>
+  </footer>
+
+  <div id="notice" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/70 p-5" onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="glass-panel rounded-2xl p-6 max-w-sm w-full text-center"><i class="fa-regular fa-bell text-3xl gold-text mb-3"></i><h3 class="text-xl font-bold mb-2">Notifications</h3><p class="muted text-sm mb-5">You're all caught up!</p><button class="gold-btn rounded-full px-6 py-2 font-bold" onclick="document.getElementById('notice').classList.add('hidden')">Got it</button></div>
+  </div>
+
+  <script>
+    // Replace this placeholder with the client's new VPLink URL before publishing.
+    const VP_GATE_URL = "https://vplink.in/Emxg";
+    const ACCESS_KEY = "eduvanta_access_expiry";
+    const RETURN_FLAG = "eduvanta_return_to_nt";
+    const NEXT_TOPPERS_URL = "https://eduvibe-nt.pages.dev/";
+
+    function showScreen(id){
+      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      const target=document.getElementById(id); if(target) target.classList.add('active');
+      const home=id==='home-screen', chat=id==='chat-screen';
+      ['home-nav','bottom-home'].forEach(x=>document.getElementById(x)?.classList.toggle('active',home));
+      ['chat-nav','bottom-chat'].forEach(x=>document.getElementById(x)?.classList.toggle('active',chat));
+      window.scrollTo({top:0,behavior:'smooth'});
+      if(id==='home-screen') updateAccessTimer();
+    }
+    function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('scrim').classList.add('show')}
+    function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('show')}
+    function hasAccess(){try{const e=Number(localStorage.getItem(ACCESS_KEY));return Number.isFinite(e)&&e>Date.now()}catch(e){return false}}
+    function updateAccessTimer(){
+      const el=document.getElementById('access-timer'),label=document.getElementById('access-timer-label');if(!el||!label)return;
+      let expiry=0;try{expiry=Number(localStorage.getItem(ACCESS_KEY))}catch(e){}
+      const remaining=expiry-Date.now();
+      if(!Number.isFinite(expiry)||expiry<=0){el.textContent='Generate a key to activate';label.textContent='24-hour key access';return}
+      if(remaining<=0){el.textContent='Access expired';label.textContent='Generate a new key through VPLink';return}
+      const sec=Math.floor(remaining/1000),h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;
+      el.textContent=[h,m,s].map(v=>String(v).padStart(2,'0')).join(':');label.textContent='Key expires in';
+    }
+    function openNextToppers(){
+      if(hasAccess()){launchNextToppers();return}
+      // Open VPLink directly from this click so the browser does not block the new tab.
+      const gateTab = window.open(VP_GATE_URL, '_blank');
+      if(!gateTab){alert('Please allow pop-ups for eduvanta.github.io, then tap Next Toppers again.');}
+      else { gateTab.opener = null; }
+    }
+    function launchNextToppers(){
+      const frame=document.getElementById('content-iframe');
+      if(frame && frame.src !== NEXT_TOPPERS_URL) frame.src=NEXT_TOPPERS_URL;
+      showScreen('viewer-screen');
+    }
+    function backToHome(){document.getElementById('content-iframe').src='';showScreen('home-screen')}
+    function refreshIframe(){const f=document.getElementById('content-iframe');f.src=f.src}
+    function filterPlatforms(){const q=document.getElementById('batch-search').value.toLowerCase();const card=document.querySelector('.platform-card');const match='next toppers'.includes(q);card.style.display=match?'flex':'none';document.getElementById('no-results').classList.toggle('hidden',match)}
+    function toggleTheme(){document.body.classList.toggle('brightness-125')}
+    function toggleSound(){const b=document.getElementById('sound-btn');b.innerHTML=b.innerHTML.includes('volume-high')?'<i class="fa-solid fa-volume-xmark"></i>':'<i class="fa-solid fa-volume-high"></i>'}
+    function showNotice(){const n=document.getElementById('notice');n.classList.remove('hidden');n.classList.add('flex')}
+    function handleUnlockedReturn(){
+      const params=new URLSearchParams(location.search);
+      if(params.get('unlocked')==='1' && params.get('open')==='nt' && hasAccess()){
+        try{localStorage.removeItem(RETURN_FLAG)}catch(e){}
+        history.replaceState({},'',location.pathname);
+        launchNextToppers();
+        return true;
+      }
+      return false;
+    }
+    window.addEventListener('storage',(event)=>{
+      if((event.key===ACCESS_KEY || event.key===RETURN_FLAG) && hasAccess()){
+        let returnRequested=false;
+        try{returnRequested=localStorage.getItem(RETURN_FLAG)==='1'}catch(e){}
+        if(returnRequested){
+          try{localStorage.removeItem(RETURN_FLAG)}catch(e){}
+          launchNextToppers();
+        }
+      }
+      updateAccessTimer();
+    });
+    window.addEventListener('DOMContentLoaded',()=>{
+      updateAccessTimer();setInterval(updateAccessTimer,1000);
+      handleUnlockedReturn();
+    });
+  </script>
+</body>
+</html>

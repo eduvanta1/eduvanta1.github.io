@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#08090d">
+  <title>Returning to EDUVANTA SCHOLARS</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top,#1c2638,#08090d 65%);color:#f8f2e4;font-family:system-ui,sans-serif}
+    .card{width:min(440px,100%);text-align:center;padding:36px 28px;border-radius:26px;background:linear-gradient(145deg,#171b25,#090b11);border:1px solid #d7aa4d99;box-shadow:0 0 28px #d7aa4d33,inset 0 0 22px #d7aa4d0d}
+    .logo{width:92px;height:92px;object-fit:contain;margin:0 auto 18px}
+    h1{font-size:22px;margin:0 0 10px}
+    p{color:#b7b5ae;font-size:14px;line-height:1.6}
+    .gold{color:#f6d47d}
+    .loader{width:34px;height:34px;margin:22px auto;border:3px solid #6b552c;border-top-color:#ffe29a;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    a{color:#f6d47d}
+  </style>
+  <script>
+    (() => {
+      // This mirrors the existing landing-page activation behavior; it does not verify ad completion.
+      try {
+        const duration = 24 * 60 * 60 * 1000;
+        localStorage.setItem("eduvanta_access_expiry", String(Date.now() + duration));
+        localStorage.setItem("eduvanta_return_to_nt", "1");
+      } catch (error) {}
+      window.location.replace("../?unlocked=1&open=nt");
+    })();
+  </script>
+</head>
+<body>
+  <main class="card">
+    <img class="logo" src="../assets/eduvanta-logo.png" alt="EDUVANTA SCHOLARS" onerror="this.style.display='none'">
+    <h1>Returning to <span class="gold">EDUVANTA SCHOLARS</span></h1>
+    <div class="loader"></div>
+    <p>Your 24-hour access is being activated. If you are not redirected, <a href="../?unlocked=1&amp;open=nt">continue here</a>.</p>
+  </main>
+</body>
+</html>
