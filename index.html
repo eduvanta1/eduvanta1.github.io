@@ -1,4 +1,139 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#050313"><title>Loading | EDUVANTA SCHOLARS"><style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 15%,#14275b 0%,#090a2a 35%,#03020d 78%);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.stars,.stars:before,.stars:after{position:absolute;inset:0;content:"";background-image:radial-gradient(2px 2px at 8% 20%,#fff,transparent),radial-gradient(1px 1px at 23% 70%,#c6aaff,transparent),radial-gradient(2px 2px at 70% 15%,#fff,transparent),radial-gradient(1px 1px at 86% 60%,#83caff,transparent),radial-gradient(1px 1px at 48% 42%,#fff,transparent),radial-gradient(2px 2px at 62% 83%,#c28bff,transparent);background-size:360px 280px;animation:drift 24s linear infinite}.stars:before{transform:scale(1.4);opacity:.55;animation-duration:34s}.stars:after{transform:scale(.8);opacity:.7;animation-duration:18s}@keyframes drift{to{transform:translateY(-45px)}}.planet{position:absolute;width:min(88vw,760px);aspect-ratio:1;border-radius:50%;top:4%;left:50%;transform:translateX(-50%);background:radial-gradient(circle at 50% 45%,#07102a 0 45%,#102a67 58%,#0a1a45 66%,#2a9bff 68%,#1232a0 70%,transparent 72%);box-shadow:0 0 35px #168bff,0 0 100px #4a2aff66;opacity:.9}.planet:after{content:"";position:absolute;inset:7%;border-radius:50%;background:radial-gradient(ellipse at 50% 0%,#75d7ff55,transparent 42%);filter:blur(12px)}.wrap{position:relative;z-index:2;width:min(560px,90vw);text-align:center;margin-top:26vh}.brand{font-size:clamp(13px,2vw,18px);letter-spacing:.36em;font-weight:800;color:#e8dcff}.brand b{display:block;font-size:clamp(36px,7vw,66px);letter-spacing:-.04em;background:linear-gradient(90deg,#fff,#dcaaff,#63b9ff);-webkit-background-clip:text;color:transparent;margin:12px 0 4px}.tag{font-size:11px;letter-spacing:.42em;color:#d4c9f7;margin-bottom:32px}.bar{height:17px;border:1px solid #bd45ff;border-radius:99px;padding:2px;background:#07031b;box-shadow:0 0 18px #9c35ff88,0 0 40px #4e39ff44;overflow:hidden}.fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#a20dff,#d74cff,#14c9ff);box-shadow:0 0 14px #c63cff;transition:width .08s linear}.percent{font-size:15px;font-weight:800;letter-spacing:.12em;margin-top:13px;color:#fff}.loading{font-size:12px;letter-spacing:.15em;color:#c8c1e6;margin-top:9px}@media(max-height:650px){.planet{width:75vh;top:-12%}.wrap{margin-top:24vh}}
-</style></head><body><div class="stars"></div><div class="planet"></div><main class="wrap"><div class="brand">THE<b>EDUVANTA</b>SCHOLARS</div><div class="tag">LEARN · GROW · ACHIEVE</div><div class="bar"><div class="fill" id="fill"></div></div><div class="percent" id="percent">0%</div><div class="loading">PREPARING YOUR LEARNING JOURNEY…</div></main>
-<script>(()=>{const fill=document.getElementById('fill'),label=document.getElementById('percent');let value=0;const duration=3600,start=performance.now();function tick(now){value=Math.min(100,Math.floor((now-start)/duration*100));fill.style.width=value+'%';label.textContent=value+'%';if(value<100)requestAnimationFrame(tick);else setTimeout(()=>location.replace('../interface/'),350)}requestAnimationFrame(tick)})();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
+  <meta name="robots" content="noindex, nofollow">
+  <title>EDUVANTA SCHOLARS — Loading</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; min-height: 100%; margin: 0; }
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(135deg, rgba(5, 8, 25, .76), rgba(12, 8, 35, .82)),
+        url("assets/interface-bg.png") center / cover no-repeat,
+        radial-gradient(ellipse at 50% 30%, #263a72 0%, #11152f 42%, #050713 100%);
+    }
+    .loading-wrap {
+      width: min(520px, calc(100% - 42px));
+      text-align: center;
+      padding: 34px 28px 30px;
+      border: 1px solid rgba(238, 194, 94, .5);
+      border-radius: 28px;
+      background: rgba(5, 8, 22, .56);
+      box-shadow: 0 0 55px rgba(221, 171, 66, .16), inset 0 0 35px rgba(255,255,255,.035);
+      backdrop-filter: blur(12px);
+    }
+    .orb {
+      width: 74px; height: 74px; margin: 0 auto 20px;
+      border: 2px solid rgba(245, 207, 125, .25);
+      border-top-color: #ffe4a0;
+      border-right-color: #dca83e;
+      border-radius: 50%;
+      animation: spin 1.25s linear infinite;
+      box-shadow: 0 0 25px rgba(237, 185, 76, .2);
+      position: relative;
+    }
+    .orb::after {
+      content: ""; position: absolute; inset: 10px;
+      border: 1px solid rgba(255, 226, 160, .5);
+      border-bottom-color: transparent; border-radius: 50%;
+      animation: spin 1.8s linear infinite reverse;
+    }
+    .eyebrow {
+      color: #f4d58f; letter-spacing: .28em; font-size: 11px;
+      font-weight: 700; text-transform: uppercase; margin-bottom: 10px;
+    }
+    h1 {
+      margin: 0; font-size: clamp(25px, 6vw, 38px);
+      letter-spacing: .04em; font-weight: 800;
+      text-shadow: 0 3px 20px rgba(0,0,0,.5);
+    }
+    h1 span { color: #f6d58b; }
+    .subtitle { color: rgba(235,239,255,.78); font-size: 14px; margin: 12px 0 25px; }
+    .track {
+      width: 100%; height: 9px; overflow: hidden; border-radius: 20px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(245, 207, 125, .35);
+    }
+    .fill {
+      width: 0%; height: 100%; border-radius: inherit;
+      background: linear-gradient(90deg, #a66b19, #ffe8a7, #d69b31);
+      box-shadow: 0 0 16px rgba(255, 215, 130, .65);
+      transition: width 70ms linear;
+    }
+    .progress-line {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px; color: rgba(235,239,255,.72); font-size: 12px;
+    }
+    #percent { color: #ffe2a0; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .orb::after { animation-duration: 4s; }
+    }
+  </style>
+</head>
+<body>
+  <main class="loading-wrap" aria-label="EDUVANTA SCHOLARS loading screen">
+    <div class="orb" aria-hidden="true"></div>
+    <div class="eyebrow">Welcome to</div>
+    <h1>EDUVANTA <span>SCHOLARS</span></h1>
+    <p class="subtitle">Preparing your learning experience…</p>
+    <div class="track" role="progressbar" aria-label="Loading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-line">
+      <span id="status">Initializing</span>
+      <span id="percent">0%</span>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const fill = document.getElementById("progress-fill");
+      const percent = document.getElementById("percent");
+      const status = document.getElementById("status");
+      const progress = document.querySelector('[role="progressbar"]');
+      const duration = 4500;
+      const started = performance.now();
+      const stages = [
+        [0, "Initializing"],
+        [25, "Loading resources"],
+        [55, "Preparing your dashboard"],
+        [85, "Almost ready"],
+        [100, "Welcome"]
+      ];
+
+      function update(now) {
+        const ratio = Math.min((now - started) / duration, 1);
+        const value = Math.min(100, Math.floor(ratio * 100));
+        fill.style.width = value + "%";
+        percent.textContent = value + "%";
+        progress.setAttribute("aria-valuenow", String(value));
+
+        let label = stages[0][1];
+        for (const stage of stages) {
+          if (value >= stage[0]) label = stage[1];
+        }
+        status.textContent = label;
+
+        if (ratio < 1) {
+          requestAnimationFrame(update);
+        } else {
+          // GitHub Pages folder route: /interface/ must contain interface/index.html
+          window.location.replace(new URL("interface/", window.location.href).href);
+        }
+      }
+
+      requestAnimationFrame(update);
+    })();
+  </script>
+</body>
+</html>
