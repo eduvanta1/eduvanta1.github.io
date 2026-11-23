@@ -117,7 +117,7 @@
               <div class="w-16 h-16 rounded-2xl bg-amber-300/10 border border-amber-300/30 flex items-center justify-center mb-4"><i class="fa-solid fa-chart-line text-4xl gold-text"></i></div>
               <h3 class="hero-title text-2xl sm:text-3xl font-bold">Next Toppers</h3>
               <p class="text-sm text-amber-100/75 mt-1">Learn · Practice · Excel</p>
-              <p id="access-timer-label" class="text-[11px] text-amber-200/70 mt-3">24-hour key access</p>
+              <p id="access-timer-label" class="text-[11px] text-amber-200/70 mt-3">7-day key access</p>
             </div>
             <span class="w-11 h-11 rounded-full gold-border grid place-items-center text-amber-200 text-xl"><i class="fa-solid fa-chevron-right"></i></span>
           </div>
@@ -169,7 +169,7 @@
       <div class="w-20 h-20 rounded-3xl mx-auto mb-5 grid place-items-center gold-border bg-amber-300/10"><i class="fa-solid fa-key text-4xl gold-text"></i></div>
       <p class="text-[10px] sm:text-xs tracking-[.28em] text-amber-200 mb-3">EDUVANTA ACCESS</p>
       <h3 id="key-modal-title" class="hero-title text-2xl sm:text-3xl font-bold gold-text mb-3">Generate Your Access Key</h3>
-      <p class="text-sm sm:text-base text-amber-50/80 leading-7 mb-2">Generate your access key, valid for <strong class="text-amber-200">24 hours</strong>.</p>
+      <p class="text-sm sm:text-base text-amber-50/80 leading-7 mb-2">Generate your access key, valid for <strong class="text-amber-200">7 days</strong>.</p>
       <p class="text-xs muted mb-7">Once your key is activated, Next Toppers will launch automatically.</p>
       <button class="gold-btn w-full rounded-full px-6 py-4 font-extrabold tracking-wide" onclick="continueToKeyGate()"><i class="fa-solid fa-bolt mr-2"></i>CLICK HERE TO GENERATE KEY</button>
       <p class="text-[10px] text-slate-500 mt-4">Secure your study session with EDUVANTA SCHOLARS</p>
@@ -201,13 +201,35 @@
     function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('show')}
     function hasAccess(){try{const e=Number(localStorage.getItem(ACCESS_KEY));return Number.isFinite(e)&&e>Date.now()}catch(e){return false}}
     function updateAccessTimer(){
-      const el=document.getElementById('access-timer'),label=document.getElementById('access-timer-label');if(!el||!label)return;
-      let expiry=0;try{expiry=Number(localStorage.getItem(ACCESS_KEY))}catch(e){}
+      const el=document.getElementById('access-timer');
+      const label=document.getElementById('access-timer-label');
+      if(!el||!label)return;
+
+      let expiry=0;
+      try{expiry=Number(localStorage.getItem(ACCESS_KEY))}catch(e){}
+
       const remaining=expiry-Date.now();
-      if(!Number.isFinite(expiry)||expiry<=0){el.textContent='Generate a key to activate';label.textContent='24-hour key access';return}
-      if(remaining<=0){el.textContent='Access expired';label.textContent='Generate a new key through VPLink';return}
-      const sec=Math.floor(remaining/1000),h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;
-      el.textContent=[h,m,s].map(v=>String(v).padStart(2,'0')).join(':');label.textContent='Key expires in';
+
+      if(!Number.isFinite(expiry)||expiry<=0){
+        el.textContent='Generate a key to activate';
+        label.textContent='7-day key access';
+        return;
+      }
+
+      if(remaining<=0){
+        el.textContent='Access expired';
+        label.textContent='Generate a new key through VPLink';
+        return;
+      }
+
+      const totalSeconds=Math.floor(remaining/1000);
+      const days=Math.floor(totalSeconds/86400);
+      const hours=Math.floor((totalSeconds%86400)/3600);
+      const minutes=Math.floor((totalSeconds%3600)/60);
+      const seconds=totalSeconds%60;
+
+      el.textContent=`${days}d ${String(hours).padStart(2,'0')}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
+      label.textContent='Key expires in';
     }
     function openNextToppers(){
       if(hasAccess()){launchNextToppers();return}
