@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090805">
+  <title>PW Access Activated | EDUVANTA SCHOLARS</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(ellipse at top,#4b3510,#171006 45%,#050505 85%);color:#fff;font-family:Arial,sans-serif}
+    .card{width:min(100%,480px);padding:34px 26px;text-align:center;border:1px solid #d9ad4d;border-radius:24px;background:#100d08;box-shadow:0 0 35px #d99c3438}
+    .mark{width:66px;height:66px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:#d9ad4d;color:#160f03;font-size:34px;font-weight:900}
+    h1{margin:0 0 10px;color:#ffe2a0;font-size:26px}
+    p{color:#d8c8a3;line-height:1.6;font-size:14px}
+    .small{font-size:12px;color:#a9956c;margin-top:22px}
+    a{display:inline-block;margin-top:14px;padding:12px 20px;border-radius:999px;background:linear-gradient(135deg,#ffe8a1,#c58b27);color:#1b1203;text-decoration:none;font-weight:800}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="mark">✓</div>
+    <h1>PW Access Activated</h1>
+    <p>Your PW access is active for 7 days. You are being redirected to the PW platform.</p>
+    <a href="../pw/">Open PW</a>
+    <p class="small">EDUVANTA SCHOLARS · LEARN · GROW · ACHIEVE</p>
+  </main>
+  <script>
+    (function () {
+      // This page should be configured as the VPLink success redirect.
+      // Redirecting here is not independent proof of VPLink task completion.
+      const PW_ACCESS_KEY = "eduvanta_pw_access_expiry";
+      const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+      try {
+        localStorage.setItem(PW_ACCESS_KEY, String(Date.now() + SEVEN_DAYS));
+      } catch (error) {
+        document.querySelector("p").textContent =
+          "Your browser could not save access. Please enable site storage and try again.";
+        return;
+      }
+      setTimeout(function () {
+        window.location.replace("../pw/");
+      }, 1200);
+    })();
+  </script>
+</body>
+</html>
