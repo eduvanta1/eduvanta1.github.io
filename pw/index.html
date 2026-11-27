@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090805">
+<title>PW | EDUVANTA SCHOLARS</title>
+<script>
+(function () {
+  const ACCESS_KEY = "eduvanta_access_expiry";
+  let expiry = 0;
+  try { expiry = Number(localStorage.getItem(ACCESS_KEY)); } catch (error) {}
+  if (!Number.isFinite(expiry) || expiry <= Date.now()) window.location.replace("../study/");
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:#fff;font-family:'DM Sans',sans-serif}
+.page{height:100%;display:flex;flex-direction:column;padding:clamp(10px,2vw,24px);gap:12px;background:radial-gradient(ellipse at 50% 0%,#4b3510 0%,#171006 36%,#050505 78%);position:relative}
+.page:before,.page:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;background:repeating-linear-gradient(132deg,transparent 0 70px,#eab84a20 72px,#eab84a20 75px,transparent 78px 145px)}
+.page:after{opacity:.2;background:radial-gradient(circle at 10% 15%,#ffd86a 0 1px,transparent 3px),radial-gradient(circle at 88% 24%,#ffd86a 0 1px,transparent 3px),radial-gradient(circle at 40% 90%,#ffd86a 0 1px,transparent 3px)}
+.top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.brand{font-size:12px;letter-spacing:.2em;font-weight:800;color:#ffe5a0}
+.brand span{display:block;color:#fff;letter-spacing:.34em;font-size:9px;margin-top:3px}
+.back{border:1px solid #e6bd5d;background:#171006;color:#ffe6a1;border-radius:999px;padding:10px 16px;font-weight:700;text-decoration:none;font-size:13px;box-shadow:0 0 15px #d59a2d44}
+.frame-shell{position:relative;z-index:1;flex:1;min-height:0;padding:7px;border-radius:20px;background:linear-gradient(135deg,#fff0a6,#b77b16 24%,#ffe18a 50%,#8d5b0e 76%,#ffe6a0);box-shadow:0 0 18px #e4b34d99,0 0 55px #e0a32f44,inset 0 0 12px #fff7}
+.frame-inner{height:100%;width:100%;overflow:hidden;border-radius:14px;background:#fff;border:1px solid #fff2}
+.frame-inner iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+.hint{position:relative;z-index:1;text-align:center;color:#d9bd7a;font-size:10px;letter-spacing:.18em}
+@media(max-width:600px){.page{padding:9px;gap:8px}.top{min-height:42px}.back{padding:8px 12px}.frame-shell{padding:4px;border-radius:14px}.frame-inner{border-radius:10px}}
+</style>
+</head>
+<body>
+<main class="page">
+<header class="top">
+<div class="brand">EDUVANTA SCHOLARS<span>LEARN · GROW · ACHIEVE</span></div>
+<a class="back" href="../study/">← Back to Study</a>
+</header>
+<section class="frame-shell"><div class="frame-inner">
+<iframe src="https://pw.lrnt.ccwu.cc/" title="PW Learning Platform" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+</div></section>
+<div class="hint">PW · POWERED BY EDUVANTA SCHOLARS</div>
+</main>
+</body>
+</html>
