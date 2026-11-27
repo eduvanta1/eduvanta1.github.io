@@ -21,14 +21,15 @@
   <script>
     (() => {
       // Browser-based 7-day activation; this page does not verify VPLink task completion.
-      try {
-        const duration = 7 * 24 * 60 * 60 * 1000;
-        localStorage.setItem("eduvanta_access_expiry", String(Date.now() + duration));
-      } catch (error) {}
+      const duration = 7 * 24 * 60 * 60 * 1000;
       let target = "nt";
       try {
         const requested = localStorage.getItem("eduvanta_return_target");
         if (requested === "pw" || requested === "nt") target = requested;
+        const expiryKey = target === "pw"
+          ? "eduvanta_pw_access_expiry"
+          : "eduvanta_access_expiry";
+        localStorage.setItem(expiryKey, String(Date.now() + duration));
       } catch (error) {}
       window.location.replace("../study/?unlocked=1&open=" + target);
     })();
