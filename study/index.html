@@ -97,13 +97,13 @@
 
       <div class="search-shell rounded-full flex items-center gap-3 px-4 py-3 mb-8 max-w-4xl mx-auto">
         <i class="fa-solid fa-magnifying-glass text-2xl text-amber-200"></i>
-        <input id="batch-search" type="search" placeholder="Search batches (Next Toppers...)" class="w-full bg-transparent outline-none text-white placeholder:text-slate-400 text-sm sm:text-base" oninput="filterPlatforms()">
+        <input id="batch-search" type="search" placeholder="Search platforms (Next Toppers, PW...)" class="w-full bg-transparent outline-none text-white placeholder:text-slate-400 text-sm sm:text-base" oninput="filterPlatforms()">
         <button class="gold-btn rounded-full w-11 h-11 shrink-0"><i class="fa-solid fa-arrow-right"></i></button>
       </div>
 
       <div id="study-platforms" class="flex items-center justify-between gap-3 mb-5">
         <h2 class="hero-title text-2xl sm:text-3xl font-bold flex items-center gap-3"><i class="fa-solid fa-graduation-cap gold-text"></i>Study Platforms</h2>
-        <span class="gold-border rounded-full px-3 sm:px-5 py-2 text-xs sm:text-sm text-amber-100 whitespace-nowrap"><i class="fa-solid fa-circle text-emerald-400 text-[9px] mr-2"></i>1 Active <i class="fa-solid fa-chevron-right ml-2"></i></span>
+        <span class="gold-border rounded-full px-3 sm:px-5 py-2 text-xs sm:text-sm text-amber-100 whitespace-nowrap"><i class="fa-solid fa-circle text-emerald-400 text-[9px] mr-2"></i>2 Active <i class="fa-solid fa-chevron-right ml-2"></i></span>
       </div>
 
       <div id="platform-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -118,6 +118,21 @@
               <h3 class="hero-title text-2xl sm:text-3xl font-bold">Next Toppers</h3>
               <p class="text-sm text-amber-100/75 mt-1">Learn · Practice · Excel</p>
               <p id="access-timer-label" class="text-[11px] text-amber-200/70 mt-3">7-day key access</p>
+            </div>
+            <span class="w-11 h-11 rounded-full gold-border grid place-items-center text-amber-200 text-xl"><i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+        </article>
+        <article class="platform-card p-5 sm:p-6 flex flex-col justify-between cursor-pointer" data-name="pw physics wallah" onclick="openPlatform('pw')">
+          <div class="flex items-start justify-between gap-3 relative z-10">
+            <div class="timer-chip rounded-full px-3 py-2 text-amber-100 text-xs sm:text-sm font-bold"><i class="fa-regular fa-clock mr-2 gold-text"></i><span id="pw-access-timer">Generate a key to activate</span></div>
+            <span class="gold-btn rounded-full px-3 py-1.5 text-[10px] sm:text-xs font-extrabold">NEW</span>
+          </div>
+          <div class="relative z-10 flex items-end justify-between mt-8">
+            <div>
+              <div class="w-16 h-16 rounded-2xl bg-amber-300/10 border border-amber-300/30 flex items-center justify-center mb-4"><i class="fa-solid fa-book-open text-4xl gold-text"></i></div>
+              <h3 class="hero-title text-2xl sm:text-3xl font-bold">PW</h3>
+              <p class="text-sm text-amber-100/75 mt-1">Physics Wallah · Learn & Grow</p>
+              <p id="pw-access-timer-label" class="text-[11px] text-amber-200/70 mt-3">7-day key access</p>
             </div>
             <span class="w-11 h-11 rounded-full gold-border grid place-items-center text-amber-200 text-xl"><i class="fa-solid fa-chevron-right"></i></span>
           </div>
@@ -170,7 +185,7 @@
       <p class="text-[10px] sm:text-xs tracking-[.28em] text-amber-200 mb-3">EDUVANTA ACCESS</p>
       <h3 id="key-modal-title" class="hero-title text-2xl sm:text-3xl font-bold gold-text mb-3">Generate Your Access Key</h3>
       <p class="text-sm sm:text-base text-amber-50/80 leading-7 mb-2">Generate your access key, valid for <strong class="text-amber-200">7 days</strong>.</p>
-      <p class="text-xs muted mb-7">Once your key is activated, Next Toppers will launch automatically.</p>
+      <p class="text-xs muted mb-7">Once your key is activated, your selected study platform will open automatically.</p>
       <button class="gold-btn w-full rounded-full px-6 py-4 font-extrabold tracking-wide" onclick="continueToKeyGate()"><i class="fa-solid fa-bolt mr-2"></i>CLICK HERE TO GENERATE KEY</button>
       <p class="text-[10px] text-slate-500 mt-4">Secure your study session with EDUVANTA SCHOLARS</p>
     </div>
@@ -200,43 +215,48 @@
     function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('scrim').classList.add('show')}
     function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('show')}
     function hasAccess(){try{const e=Number(localStorage.getItem(ACCESS_KEY));return Number.isFinite(e)&&e>Date.now()}catch(e){return false}}
+    let selectedPlatform = 'nt';
     function updateAccessTimer(){
-      const el=document.getElementById('access-timer');
-      const label=document.getElementById('access-timer-label');
-      if(!el||!label)return;
-
       let expiry=0;
       try{expiry=Number(localStorage.getItem(ACCESS_KEY))}catch(e){}
-
       const remaining=expiry-Date.now();
-
-      if(!Number.isFinite(expiry)||expiry<=0){
-        el.textContent='Generate a key to activate';
-        label.textContent='7-day key access';
-        return;
+      let display='Generate a key to activate';
+      let labelText='7-day key access';
+      if(Number.isFinite(expiry)&&expiry>0){
+        if(remaining<=0){
+          display='Access expired';
+          labelText='Generate a new key through VPLink';
+        } else {
+          const totalSeconds=Math.floor(remaining/1000);
+          const days=Math.floor(totalSeconds/86400);
+          const hours=Math.floor((totalSeconds%86400)/3600);
+          const minutes=Math.floor((totalSeconds%3600)/60);
+          const seconds=totalSeconds%60;
+          display=`${days}d ${String(hours).padStart(2,'0')}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
+          labelText='Key expires in';
+        }
       }
-
-      if(remaining<=0){
-        el.textContent='Access expired';
-        label.textContent='Generate a new key through VPLink';
-        return;
-      }
-
-      const totalSeconds=Math.floor(remaining/1000);
-      const days=Math.floor(totalSeconds/86400);
-      const hours=Math.floor((totalSeconds%86400)/3600);
-      const minutes=Math.floor((totalSeconds%3600)/60);
-      const seconds=totalSeconds%60;
-
-      el.textContent=`${days}d ${String(hours).padStart(2,'0')}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
-      label.textContent='Key expires in';
+      ['access-timer','pw-access-timer'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.textContent=display;
+      });
+      ['access-timer-label','pw-access-timer-label'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.textContent=labelText;
+      });
     }
-    function openNextToppers(){
-      if(hasAccess()){launchNextToppers();return}
+    function openPlatform(platform){
+      selectedPlatform=platform;
+      if(hasAccess()){launchPlatform(platform);return}
+      const title=document.getElementById('key-modal-title');
+      if(title) title.textContent=platform==='pw'?'Generate PW Access Key':'Generate Next Toppers Access Key';
       document.getElementById('key-modal').classList.add('show');
+    }
+    function openNextToppers(){openPlatform('nt')}
+    function launchPlatform(platform){
+      window.location.href=platform==='pw'?'../pw/':'../nt/';
     }
     function closeKeyModal(){document.getElementById('key-modal').classList.remove('show')}
     function continueToKeyGate(){
+      try{localStorage.setItem('eduvanta_return_target',selectedPlatform)}catch(e){}
       const gateTab=window.open(VP_GATE_URL,'_blank');
       if(!gateTab){alert('Please allow pop-ups for this website, then tap the generate-key button again.');return}
       gateTab.opener=null;
@@ -247,16 +267,26 @@
     }
     function backToHome(){document.getElementById('content-iframe').src='';showScreen('home-screen')}
     function refreshIframe(){const f=document.getElementById('content-iframe');f.src=f.src}
-    function filterPlatforms(){const q=document.getElementById('batch-search').value.toLowerCase();const card=document.querySelector('.platform-card');const match='next toppers'.includes(q);card.style.display=match?'flex':'none';document.getElementById('no-results').classList.toggle('hidden',match)}
+    function filterPlatforms(){
+      const q=document.getElementById('batch-search').value.toLowerCase();
+      let matches=0;
+      document.querySelectorAll('#platform-grid .platform-card').forEach(card=>{
+        const match=(card.dataset.name||'').includes(q);
+        card.style.display=match?'flex':'none';
+        if(match)matches++;
+      });
+      document.getElementById('no-results').classList.toggle('hidden',matches>0);
+    }
     function toggleTheme(){document.body.classList.toggle('brightness-125')}
     function toggleSound(){const b=document.getElementById('sound-btn');b.innerHTML=b.innerHTML.includes('volume-high')?'<i class="fa-solid fa-volume-xmark"></i>':'<i class="fa-solid fa-volume-high"></i>'}
     function showNotice(){const n=document.getElementById('notice');n.classList.remove('hidden');n.classList.add('flex')}
     function handleUnlockedReturn(){
       const params=new URLSearchParams(location.search);
-      if(params.get('unlocked')==='1' && params.get('open')==='nt' && hasAccess()){
-        try{localStorage.removeItem(RETURN_FLAG)}catch(e){}
+      const target=params.get('open');
+      if(params.get('unlocked')==='1' && ['nt','pw'].includes(target) && hasAccess()){
+        try{localStorage.removeItem(RETURN_FLAG);localStorage.removeItem('eduvanta_return_target')}catch(e){}
         history.replaceState({},'',location.pathname);
-        launchNextToppers();
+        launchPlatform(target);
         return true;
       }
       return false;
