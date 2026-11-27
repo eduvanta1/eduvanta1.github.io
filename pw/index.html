@@ -7,7 +7,7 @@
 <title>PW | EDUVANTA SCHOLARS</title>
 <script>
 (function () {
-  const ACCESS_KEY = "eduvanta_access_expiry";
+  const ACCESS_KEY = "eduvanta_pw_access_expiry";
   let expiry = 0;
   try { expiry = Number(localStorage.getItem(ACCESS_KEY)); } catch (error) {}
   if (!Number.isFinite(expiry) || expiry <= Date.now()) window.location.replace("../study/");
