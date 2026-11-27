@@ -97,7 +97,7 @@
 
       <div class="search-shell rounded-full flex items-center gap-3 px-4 py-3 mb-8 max-w-4xl mx-auto">
         <i class="fa-solid fa-magnifying-glass text-2xl text-amber-200"></i>
-        <input id="batch-search" type="search" placeholder="Search platforms (Next Toppers, PW...)" class="w-full bg-transparent outline-none text-white placeholder:text-slate-400 text-sm sm:text-base" oninput="filterPlatforms()">
+        <input id="batch-search" type="search" placeholder="Search batches (Next Toppers...)" class="w-full bg-transparent outline-none text-white placeholder:text-slate-400 text-sm sm:text-base" oninput="filterPlatforms()">
         <button class="gold-btn rounded-full w-11 h-11 shrink-0"><i class="fa-solid fa-arrow-right"></i></button>
       </div>
 
@@ -122,17 +122,17 @@
             <span class="w-11 h-11 rounded-full gold-border grid place-items-center text-amber-200 text-xl"><i class="fa-solid fa-chevron-right"></i></span>
           </div>
         </article>
-        <article class="platform-card p-5 sm:p-6 flex flex-col justify-between cursor-pointer" data-name="pw physics wallah" onclick="openPlatform('pw')">
+        <article class="platform-card p-5 sm:p-6 flex flex-col justify-between cursor-pointer" data-name="pw physics wallah" onclick="openPW()">
           <div class="flex items-start justify-between gap-3 relative z-10">
             <div class="timer-chip rounded-full px-3 py-2 text-amber-100 text-xs sm:text-sm font-bold"><i class="fa-regular fa-clock mr-2 gold-text"></i><span id="pw-access-timer">Generate a key to activate</span></div>
-            <span class="gold-btn rounded-full px-3 py-1.5 text-[10px] sm:text-xs font-extrabold">NEW</span>
+            <span class="rounded-full border border-amber-200/50 px-3 py-1.5 text-[10px] sm:text-xs font-extrabold text-amber-100">PW</span>
           </div>
           <div class="relative z-10 flex items-end justify-between mt-8">
             <div>
               <div class="w-16 h-16 rounded-2xl bg-amber-300/10 border border-amber-300/30 flex items-center justify-center mb-4"><i class="fa-solid fa-book-open text-4xl gold-text"></i></div>
-              <h3 class="hero-title text-2xl sm:text-3xl font-bold">PW</h3>
-              <p class="text-sm text-amber-100/75 mt-1">Physics Wallah · Learn & Grow</p>
-              <p id="pw-access-timer-label" class="text-[11px] text-amber-200/70 mt-3">7-day key access</p>
+              <h3 class="hero-title text-2xl sm:text-3xl font-bold">Physics Wallah</h3>
+              <p class="text-sm text-amber-100/75 mt-1">Learn · Practice · Excel</p>
+              <p id="pw-access-timer-label" class="text-[11px] text-amber-200/70 mt-3">Separate 7-day key access</p>
             </div>
             <span class="w-11 h-11 rounded-full gold-border grid place-items-center text-amber-200 text-xl"><i class="fa-solid fa-chevron-right"></i></span>
           </div>
@@ -185,7 +185,7 @@
       <p class="text-[10px] sm:text-xs tracking-[.28em] text-amber-200 mb-3">EDUVANTA ACCESS</p>
       <h3 id="key-modal-title" class="hero-title text-2xl sm:text-3xl font-bold gold-text mb-3">Generate Your Access Key</h3>
       <p class="text-sm sm:text-base text-amber-50/80 leading-7 mb-2">Generate your access key, valid for <strong class="text-amber-200">7 days</strong>.</p>
-      <p class="text-xs muted mb-7">Once your key is activated, your selected study platform will open automatically.</p>
+      <p id="key-modal-description" class="text-xs muted mb-7">Once your key is activated, Next Toppers will launch automatically.</p>
       <button class="gold-btn w-full rounded-full px-6 py-4 font-extrabold tracking-wide" onclick="continueToKeyGate()"><i class="fa-solid fa-bolt mr-2"></i>CLICK HERE TO GENERATE KEY</button>
       <p class="text-[10px] text-slate-500 mt-4">Secure your study session with EDUVANTA SCHOLARS</p>
     </div>
@@ -196,18 +196,15 @@
   </div>
 
   <script>
-    // Replace this placeholder with the client's new VPLink URL before publishing.
-    const VP_GATE_URLS = {
-      nt: "https://vplink.in/UAU6",
-      pw: "https://vplink.in/xEEEWv"
-    };
-    const ACCESS_KEYS = {
-      nt: "eduvanta_access_expiry",
-      pw: "eduvanta_pw_access_expiry"
-    };
+    // Separate VPLinks and independent browser-based access periods.
+    const NT_GATE_URL = "https://vplink.in/UAU6";
+    const PW_GATE_URL = "https://vplink.in/MmXS";
+    const ACCESS_KEY = "eduvanta_access_expiry";
+    const PW_ACCESS_KEY = "eduvanta_pw_access_expiry";
     const RETURN_FLAG = "eduvanta_return_to_nt";
-    const NEXT_TOPPERS_URL = "https://eduvibe-nt.pages.dev/";
     const NT_PAGE_URL = "../nt/";
+    const PW_PAGE_URL = "../pw/";
+    let selectedPlatform = "nt";
 
     function showScreen(id){
       document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -220,92 +217,45 @@
     }
     function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('scrim').classList.add('show')}
     function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('show')}
-    function hasAccess(platform='nt'){
-      try {
-        const e=Number(localStorage.getItem(ACCESS_KEYS[platform] || ACCESS_KEYS.nt));
-        return Number.isFinite(e)&&e>Date.now();
-      } catch(e) { return false; }
+    function hasKeyAccess(key){try{const e=Number(localStorage.getItem(key));return Number.isFinite(e)&&e>Date.now()}catch(e){return false}}
+    function hasAccess(){return hasKeyAccess(ACCESS_KEY)}
+    function renderTimer(key, timerId, labelId){
+      const el=document.getElementById(timerId), label=document.getElementById(labelId);
+      if(!el||!label)return;
+      let expiry=0; try{expiry=Number(localStorage.getItem(key))}catch(e){}
+      const remaining=expiry-Date.now();
+      if(!Number.isFinite(expiry)||expiry<=0){el.textContent='Generate a key to activate';label.textContent='7-day key access';return}
+      if(remaining<=0){el.textContent='Access expired';label.textContent='Generate a new key through VPLink';return}
+      const totalSeconds=Math.floor(remaining/1000), days=Math.floor(totalSeconds/86400), hours=Math.floor((totalSeconds%86400)/3600), minutes=Math.floor((totalSeconds%3600)/60), seconds=totalSeconds%60;
+      el.textContent=`${days}d ${String(hours).padStart(2,'0')}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
+      label.textContent='Key expires in';
     }
-    let selectedPlatform = 'nt';
-    function updateAccessTimer(){
-      const renderTimer=(platform,timerId,labelId)=>{
-        let expiry=0;
-        try{expiry=Number(localStorage.getItem(ACCESS_KEYS[platform]))}catch(e){}
-        const remaining=expiry-Date.now();
-        let display='Generate a key to activate';
-        let labelText='7-day key access';
-        if(Number.isFinite(expiry)&&expiry>0){
-          if(remaining<=0){
-            display='Access expired';
-            labelText='Generate a new key through VPLink';
-          } else {
-            const totalSeconds=Math.floor(remaining/1000);
-            const days=Math.floor(totalSeconds/86400);
-            const hours=Math.floor((totalSeconds%86400)/3600);
-            const minutes=Math.floor((totalSeconds%3600)/60);
-            const seconds=totalSeconds%60;
-            display=`${days}d ${String(hours).padStart(2,'0')}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
-            labelText='Key expires in';
-          }
-        }
-        const timer=document.getElementById(timerId);
-        const label=document.getElementById(labelId);
-        if(timer)timer.textContent=display;
-        if(label)label.textContent=labelText;
-      };
-      renderTimer('nt','access-timer','access-timer-label');
-      renderTimer('pw','pw-access-timer','pw-access-timer-label');
-    }
-    function openPlatform(platform){
-      selectedPlatform=platform;
-      if(hasAccess(platform)){launchPlatform(platform);return}
-      const title=document.getElementById('key-modal-title');
-      if(title) title.textContent=platform==='pw'?'Generate PW Access Key':'Generate Next Toppers Access Key';
-      document.getElementById('key-modal').classList.add('show');
-    }
-    function openNextToppers(){openPlatform('nt')}
-    function launchPlatform(platform){
-      window.location.href=platform==='pw'?'../pw/':'../nt/';
-    }
+    function updateAccessTimer(){renderTimer(ACCESS_KEY,'access-timer','access-timer-label');renderTimer(PW_ACCESS_KEY,'pw-access-timer','pw-access-timer-label')}
+    function openNextToppers(){selectedPlatform='nt';if(hasKeyAccess(ACCESS_KEY)){launchNextToppers();return}showKeyModal('Next Toppers')}
+    function openPW(){selectedPlatform='pw';if(hasKeyAccess(PW_ACCESS_KEY)){launchPW();return}showKeyModal('Physics Wallah')}
+    function showKeyModal(name){document.getElementById('key-modal-title').textContent=`Generate ${name} Access Key`;document.getElementById('key-modal-description').textContent=`After activation, ${name} will open automatically. Access is valid for 7 days.`;document.getElementById('key-modal').classList.add('show')}
     function closeKeyModal(){document.getElementById('key-modal').classList.remove('show')}
-    function continueToKeyGate(){
-      try{localStorage.setItem('eduvanta_return_target',selectedPlatform)}catch(e){}
-      const gateTab=window.open(VP_GATE_URLS[selectedPlatform] || VP_GATE_URLS.nt,'_blank');
-      if(!gateTab){alert('Please allow pop-ups for this website, then tap the generate-key button again.');return}
-      gateTab.opener=null;
-      closeKeyModal();
-    }
-    function launchNextToppers(){
-      window.location.href = NT_PAGE_URL;
-    }
+    function continueToKeyGate(){const url=selectedPlatform==='pw'?PW_GATE_URL:NT_GATE_URL;const gateTab=window.open(url,'_blank');if(!gateTab){alert('Please allow pop-ups for this website, then tap the generate-key button again.');return}gateTab.opener=null;closeKeyModal()}
+    function launchNextToppers(){window.location.href=NT_PAGE_URL}
+    function launchPW(){window.location.href=PW_PAGE_URL}
     function backToHome(){document.getElementById('content-iframe').src='';showScreen('home-screen')}
     function refreshIframe(){const f=document.getElementById('content-iframe');f.src=f.src}
-    function filterPlatforms(){
-      const q=document.getElementById('batch-search').value.toLowerCase();
-      let matches=0;
-      document.querySelectorAll('#platform-grid .platform-card').forEach(card=>{
-        const match=(card.dataset.name||'').includes(q);
-        card.style.display=match?'flex':'none';
-        if(match)matches++;
-      });
-      document.getElementById('no-results').classList.toggle('hidden',matches>0);
-    }
+    function filterPlatforms(){const q=document.getElementById('batch-search').value.toLowerCase();const cards=[...document.querySelectorAll('.platform-card')];let count=0;cards.forEach(card=>{const match=card.dataset.name.includes(q);card.style.display=match?'flex':'none';if(match)count++});document.getElementById('no-results').classList.toggle('hidden',count>0)}
     function toggleTheme(){document.body.classList.toggle('brightness-125')}
     function toggleSound(){const b=document.getElementById('sound-btn');b.innerHTML=b.innerHTML.includes('volume-high')?'<i class="fa-solid fa-volume-xmark"></i>':'<i class="fa-solid fa-volume-high"></i>'}
     function showNotice(){const n=document.getElementById('notice');n.classList.remove('hidden');n.classList.add('flex')}
     function handleUnlockedReturn(){
       const params=new URLSearchParams(location.search);
-      const target=params.get('open');
-      if(params.get('unlocked')==='1' && ['nt','pw'].includes(target) && hasAccess(target)){
-        try{localStorage.removeItem(RETURN_FLAG);localStorage.removeItem('eduvanta_return_target')}catch(e){}
+      if(params.get('unlocked')==='1' && params.get('open')==='nt' && hasAccess()){
+        try{localStorage.removeItem(RETURN_FLAG)}catch(e){}
         history.replaceState({},'',location.pathname);
-        launchPlatform(target);
+        launchNextToppers();
         return true;
       }
       return false;
     }
     window.addEventListener('storage',(event)=>{
-      if((event.key===ACCESS_KEYS.nt || event.key===ACCESS_KEYS.pw || event.key===RETURN_FLAG) && (hasAccess('nt') || hasAccess('pw'))){
+      if((event.key===ACCESS_KEY || event.key===PW_ACCESS_KEY || event.key===RETURN_FLAG) && hasAccess()){
         let returnRequested=false;
         try{returnRequested=localStorage.getItem(RETURN_FLAG)==='1'}catch(e){}
         if(returnRequested){
