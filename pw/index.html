@@ -7,10 +7,12 @@
 <title>PW | EDUVANTA SCHOLARS</title>
 <script>
 (function () {
-  const ACCESS_KEY = "eduvanta_pw_access_expiry";
+  const PW_ACCESS_KEY = "eduvanta_pw_access_expiry";
   let expiry = 0;
-  try { expiry = Number(localStorage.getItem(ACCESS_KEY)); } catch (error) {}
-  if (!Number.isFinite(expiry) || expiry <= Date.now()) window.location.replace("../study/");
+  try { expiry = Number(localStorage.getItem(PW_ACCESS_KEY)); } catch (error) {}
+  if (!Number.isFinite(expiry) || expiry <= Date.now()) {
+    window.location.replace("../study/");
+  }
 })();
 </script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
