@@ -197,8 +197,14 @@
 
   <script>
     // Replace this placeholder with the client's new VPLink URL before publishing.
-    const VP_GATE_URL = "https://vplink.in/UAU6";
-    const ACCESS_KEY = "eduvanta_access_expiry";
+    const VP_GATE_URLS = {
+      nt: "https://vplink.in/UAU6",
+      pw: "https://vplink.in/xEEEWv"
+    };
+    const ACCESS_KEYS = {
+      nt: "eduvanta_access_expiry",
+      pw: "eduvanta_pw_access_expiry"
+    };
     const RETURN_FLAG = "eduvanta_return_to_nt";
     const NEXT_TOPPERS_URL = "https://eduvibe-nt.pages.dev/";
     const NT_PAGE_URL = "../nt/";
@@ -214,38 +220,45 @@
     }
     function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('scrim').classList.add('show')}
     function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('show')}
-    function hasAccess(){try{const e=Number(localStorage.getItem(ACCESS_KEY));return Number.isFinite(e)&&e>Date.now()}catch(e){return false}}
+    function hasAccess(platform='nt'){
+      try {
+        const e=Number(localStorage.getItem(ACCESS_KEYS[platform] || ACCESS_KEYS.nt));
+        return Number.isFinite(e)&&e>Date.now();
+      } catch(e) { return false; }
+    }
     let selectedPlatform = 'nt';
     function updateAccessTimer(){
-      let expiry=0;
-      try{expiry=Number(localStorage.getItem(ACCESS_KEY))}catch(e){}
-      const remaining=expiry-Date.now();
-      let display='Generate a key to activate';
-      let labelText='7-day key access';
-      if(Number.isFinite(expiry)&&expiry>0){
-        if(remaining<=0){
-          display='Access expired';
-          labelText='Generate a new key through VPLink';
-        } else {
-          const totalSeconds=Math.floor(remaining/1000);
-          const days=Math.floor(totalSeconds/86400);
-          const hours=Math.floor((totalSeconds%86400)/3600);
-          const minutes=Math.floor((totalSeconds%3600)/60);
-          const seconds=totalSeconds%60;
-          display=`${days}d ${String(hours).padStart(2,'0')}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
-          labelText='Key expires in';
+      const renderTimer=(platform,timerId,labelId)=>{
+        let expiry=0;
+        try{expiry=Number(localStorage.getItem(ACCESS_KEYS[platform]))}catch(e){}
+        const remaining=expiry-Date.now();
+        let display='Generate a key to activate';
+        let labelText='7-day key access';
+        if(Number.isFinite(expiry)&&expiry>0){
+          if(remaining<=0){
+            display='Access expired';
+            labelText='Generate a new key through VPLink';
+          } else {
+            const totalSeconds=Math.floor(remaining/1000);
+            const days=Math.floor(totalSeconds/86400);
+            const hours=Math.floor((totalSeconds%86400)/3600);
+            const minutes=Math.floor((totalSeconds%3600)/60);
+            const seconds=totalSeconds%60;
+            display=`${days}d ${String(hours).padStart(2,'0')}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
+            labelText='Key expires in';
+          }
         }
-      }
-      ['access-timer','pw-access-timer'].forEach(id=>{
-        const el=document.getElementById(id); if(el) el.textContent=display;
-      });
-      ['access-timer-label','pw-access-timer-label'].forEach(id=>{
-        const el=document.getElementById(id); if(el) el.textContent=labelText;
-      });
+        const timer=document.getElementById(timerId);
+        const label=document.getElementById(labelId);
+        if(timer)timer.textContent=display;
+        if(label)label.textContent=labelText;
+      };
+      renderTimer('nt','access-timer','access-timer-label');
+      renderTimer('pw','pw-access-timer','pw-access-timer-label');
     }
     function openPlatform(platform){
       selectedPlatform=platform;
-      if(hasAccess()){launchPlatform(platform);return}
+      if(hasAccess(platform)){launchPlatform(platform);return}
       const title=document.getElementById('key-modal-title');
       if(title) title.textContent=platform==='pw'?'Generate PW Access Key':'Generate Next Toppers Access Key';
       document.getElementById('key-modal').classList.add('show');
@@ -257,7 +270,7 @@
     function closeKeyModal(){document.getElementById('key-modal').classList.remove('show')}
     function continueToKeyGate(){
       try{localStorage.setItem('eduvanta_return_target',selectedPlatform)}catch(e){}
-      const gateTab=window.open(VP_GATE_URL,'_blank');
+      const gateTab=window.open(VP_GATE_URLS[selectedPlatform] || VP_GATE_URLS.nt,'_blank');
       if(!gateTab){alert('Please allow pop-ups for this website, then tap the generate-key button again.');return}
       gateTab.opener=null;
       closeKeyModal();
@@ -283,7 +296,7 @@
     function handleUnlockedReturn(){
       const params=new URLSearchParams(location.search);
       const target=params.get('open');
-      if(params.get('unlocked')==='1' && ['nt','pw'].includes(target) && hasAccess()){
+      if(params.get('unlocked')==='1' && ['nt','pw'].includes(target) && hasAccess(target)){
         try{localStorage.removeItem(RETURN_FLAG);localStorage.removeItem('eduvanta_return_target')}catch(e){}
         history.replaceState({},'',location.pathname);
         launchPlatform(target);
@@ -292,7 +305,7 @@
       return false;
     }
     window.addEventListener('storage',(event)=>{
-      if((event.key===ACCESS_KEY || event.key===RETURN_FLAG) && hasAccess()){
+      if((event.key===ACCESS_KEYS.nt || event.key===ACCESS_KEYS.pw || event.key===RETURN_FLAG) && (hasAccess('nt') || hasAccess('pw'))){
         let returnRequested=false;
         try{returnRequested=localStorage.getItem(RETURN_FLAG)==='1'}catch(e){}
         if(returnRequested){
