@@ -21,17 +21,12 @@
   <script>
     (() => {
       // Browser-based 7-day activation; this page does not verify VPLink task completion.
-      const duration = 7 * 24 * 60 * 60 * 1000;
-      let target = "nt";
       try {
-        const requested = localStorage.getItem("eduvanta_return_target");
-        if (requested === "pw" || requested === "nt") target = requested;
-        const expiryKey = target === "pw"
-          ? "eduvanta_pw_access_expiry"
-          : "eduvanta_access_expiry";
-        localStorage.setItem(expiryKey, String(Date.now() + duration));
+        const duration = 7 * 24 * 60 * 60 * 1000;
+        localStorage.setItem("eduvanta_access_expiry", String(Date.now() + duration));
+        localStorage.setItem("eduvanta_return_to_nt", "1");
       } catch (error) {}
-      window.location.replace("../study/?unlocked=1&open=" + target);
+      window.location.replace("../study/?unlocked=1&open=nt");
     })();
   </script>
 </head>
@@ -40,7 +35,7 @@
     <img class="logo" src="../assets/eduvanta-logo.png" alt="EDUVANTA SCHOLARS" onerror="this.style.display='none'">
     <h1>Returning to <span class="gold">EDUVANTA SCHOLARS</span></h1>
     <div class="loader"></div>
-    <p>Your 7-day access is being activated. If you are not redirected, <a href="../study/">continue here</a>.</p>
+    <p>Your 7-day access is being activated. If you are not redirected, <a href="../study/?unlocked=1&amp;open=nt">continue here</a>.</p>
   </main>
 </body>
 </html>
